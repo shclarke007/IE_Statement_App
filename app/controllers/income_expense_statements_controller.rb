@@ -16,8 +16,8 @@ class IncomeExpenseStatementsController < ApplicationController
   end
 
   def create
-    income_expense_statement_params = parse_statment_input
-
+    income_expense_statement_params = parse_statement_input
+    
     @income_expense_statement = IncomeExpenseStatement.new(income_expense_statement_params)
     if @income_expense_statement.save
       redirect_to income_expense_statements_url, notice: 'Income and expense statement was successfully added!'
@@ -63,7 +63,7 @@ class IncomeExpenseStatementsController < ApplicationController
     params.require(:income_expense_statement).permit(:statement_data)
   end
 
-  def parse_statment_input
+  def parse_statement_input
     if params[:income_expense_statement][:statement_data].is_a?(String)
       statement_input = JSON.parse(params[:income_expense_statement][:statement_data])
     end

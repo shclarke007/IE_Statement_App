@@ -1,6 +1,6 @@
-<%= link_to 'Back to statements view', income_expense_statements_path %>
+<%= link_to 'View existing statements', income_expense_statements_path %>
 
-<h3>Expenditures Incomes Satement</h3>
+<h3>Add Expenditures and Incomes Statement</h3>
 
 <%= form_with(model: @income_expense_statement, local: true) do |form| %>
   <% if @income_expense_statement.errors.any? %>
