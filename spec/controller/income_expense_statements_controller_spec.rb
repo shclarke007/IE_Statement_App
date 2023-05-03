@@ -1,4 +1,6 @@
-require 'rails_helper'
+# frozen_string_literal: true
+
+require './spec/rails_helper'
 
 RSpec.describe IncomeExpenseStatementsController, type: :controller, aggregate_failures: true do
   let(:user) { FactoryBot.create(:user) }
