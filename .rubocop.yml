@@ -1,0 +1,32 @@
+require:
+  - rubocop-rails
+
+AllCops:
+  TargetRubyVersion: 2.7
+  NewCops: disable
+  Exclude:
+    - .guardrc
+    - app/views/**/*
+    - bin/**/*
+    - db/**/*
+    - gems/**/*
+    - frontend/**/*
+    - lib/tasks/**/*.rake
+    - reactApp/**/*
+    - tmp/**/*
+    - vendor/**/*
+    - spec/support/api/rswag_extensions.rb
+    - config/environments/**/*
+    - app/services/**/*
+    - config/initializers/**/*
+    - config/application/**/*
+    - app/helpers/**/*
+
+Layout/LineLength:
+  Max: 120
+
+Metrics/MethodLength:
+  CountAsOne: ['array', 'hash', 'heredoc']
+  
+Style/Documentation:
+  Enabled: false
