@@ -1,24 +1,21 @@
 # README
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+  Income Expense program that allows upload of income & expense statements via csv or form input
+## Getting Started
+  git clone git@github.com:shclarke007/IE_Statement_App.git
+  cd ie_statement_app
+  bundle install
+  rails s -p 3000
+  http://localhost:3000/
+  ### Ruby version
+  2.7.4
+  ### Rails version
+  6.1.7.3
+  ### System dependencies
+  postgres database
+  ###  Database creation
+  rails db:create
+  ### Database initialization
+  rails db:migrate
+  rails db:seed
+ ### How to run the test suite
+  rspec 

@@ -38,6 +38,7 @@ group :development, :test do
   gem 'rails-controller-testing'
   gem 'rspec-rails'
   gem 'rubocop-rails'
+  gem 'faker'
 end
 
 group :development do
