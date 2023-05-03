@@ -1,5 +1,36 @@
-<h1>New Income Expense Statement</h1>
+<%= link_to 'Back to statements view', income_expense_statements_path %>
 
-<%= render 'form', income_expense_statement: @income_expense_statement %>
+<h3>Expenditures Incomes Satement</h3>
 
-<%= link_to 'Back', income_expense_statements_path %>
+<%= form_with(model: @income_expense_statement, local: true) do |form| %>
+  <% if @income_expense_statement.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@income_expense_statement.errors.count, "error") %> prohibited this income & expense statement from being saved:</h2>
+
+      <ul>
+        <% @income_expense_statement.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <small class="text-sm">Enter your income and expense data in JSON format, like this: [{"income_title":"Salary","income_amount":"5000", "frequency": "monthly", "currency": "GBP"},{"expense_title":"Rent","expense_amount":"1000", "frequency": "monthly", "currency": "GBP"}]</small>
+    <br>
+    <%= form.label :statement_data %>
+    <br>
+    <%= form.text_area :statement_data, class: 'form-control' %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+<br>
+<small>Or upload income and expense statement via csv using headers: [Income, Income Amount, Expenditure, Expenditure Amount, Currency, Frequency]</small>
+<%=form_with url: upload_income_expense_statements_path, method: :post do |form| %>
+  <%= form.file_field :file, accept: '.csv' %>
+  <br>
+  <%= form.button "Import" %>
+<% end %>

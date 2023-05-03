@@ -1,20 +1,27 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Income Expense Statements</h1>
-
-<table>
+<h1 className="text-3xl font-bold underline">Income/Expense Statements</h1>
+<p><strong>User: </strong> <%= current_user.email %></p>
+<table class="table-auto">
   <thead>
     <tr>
-      <th colspan="3"></th>
+      <th>Statements ID</th>
+      <th>Date</th>
+      <th>Disposable Income</th>
+      <th>Income Ratio</th>
     </tr>
   </thead>
 
   <tbody>
     <% @income_expense_statements.each do |income_expense_statement| %>
       <tr>
-        <td><%= link_to 'Show', income_expense_statement %></td>
-        <td><%= link_to 'Edit', edit_income_expense_statement_path(income_expense_statement) %></td>
-        <td><%= link_to 'Destroy', income_expense_statement, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= income_expense_statement.id %></td>
+        <td><%= income_expense_statement.created_at.strftime("%B %e, %Y, %l:%M %p") %></td>
+        <td><%= income_expense_statement.disposable_income %></td>
+        <td><%= income_expense_statement.income_ratio %></td>
+        <td></td>
+        <td><%= link_to 'View', income_expense_statement %></td>
+        <td><%= link_to 'Delete', income_expense_statement, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

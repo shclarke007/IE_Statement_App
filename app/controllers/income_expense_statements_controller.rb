@@ -1,70 +1,73 @@
+# frozen_string_literal: true
+
 class IncomeExpenseStatementsController < ApplicationController
-  before_action :set_income_expense_statement, only: %i[ show edit update destroy ]
+  before_action :set_income_expense_statement, only: %i[show destroy]
   before_action :authenticate_user!
-  # GET /income_expense_statements or /income_expense_statements.json
+
   def index
-    @income_expense_statements = IncomeExpenseStatement.all
+    @income_expense_statements = current_user.income_expense_statements.order(created_at: :desc)
+    @statements_by_date = current_user.income_expense_statements.group_by { |statement| statement.created_at.to_date }
   end
 
-  # GET /income_expense_statements/1 or /income_expense_statements/1.json
-  def show
-  end
+  def show; end
 
-  # GET /income_expense_statements/new
   def new
     @income_expense_statement = IncomeExpenseStatement.new
   end
 
-  # GET /income_expense_statements/1/edit
-  def edit
-  end
-
-  # POST /income_expense_statements or /income_expense_statements.json
   def create
-    @income_expense_statement = IncomeExpenseStatement.new(income_expense_statement_params)
+    income_expense_statement_params = parse_statment_input
 
-    respond_to do |format|
-      if @income_expense_statement.save
-        format.html { redirect_to income_expense_statement_url(@income_expense_statement), notice: "Income expense statement was successfully created." }
-        format.json { render :show, status: :created, location: @income_expense_statement }
-      else
+    @income_expense_statement = IncomeExpenseStatement.new(income_expense_statement_params)
+    if @income_expense_statement.save
+      redirect_to income_expense_statements_url, notice: 'Income and expense statement was successfully added!'
+    else
+      respond_to do |format|
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @income_expense_statement.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /income_expense_statements/1 or /income_expense_statements/1.json
-  def update
-    respond_to do |format|
-      if @income_expense_statement.update(income_expense_statement_params)
-        format.html { redirect_to income_expense_statement_url(@income_expense_statement), notice: "Income expense statement was successfully updated." }
-        format.json { render :show, status: :ok, location: @income_expense_statement }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @income_expense_statement.errors, status: :unprocessable_entity }
-      end
+  def upload
+    uploaded_file = params[:file]
+    unless uploaded_file.content_type == 'text/csv'
+      return redirect_to income_expense_statements_url,
+                         notice: 'Only CSV file types allowed'
     end
+
+    CsvUploadStatementService.new.call(file: uploaded_file, current_user: current_user)
+    redirect_to income_expense_statements_url, notice: 'Statement uploaded successfully!'
   end
 
-  # DELETE /income_expense_statements/1 or /income_expense_statements/1.json
   def destroy
     @income_expense_statement.destroy
 
     respond_to do |format|
-      format.html { redirect_to income_expense_statements_url, notice: "Income expense statement was successfully destroyed." }
+      format.html do
+        redirect_to income_expense_statements_url, notice: 'Income expense statement was successfully destroyed.'
+      end
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_income_expense_statement
-      @income_expense_statement = IncomeExpenseStatement.find(params[:id])
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_income_expense_statement
+    @income_expense_statement = IncomeExpenseStatement.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def income_expense_statement_params
+    params.require(:income_expense_statement).permit(:statement_data)
+  end
+
+  def parse_statment_input
+    if params[:income_expense_statement][:statement_data].is_a?(String)
+      statement_input = JSON.parse(params[:income_expense_statement][:statement_data])
     end
 
-    # Only allow a list of trusted parameters through.
-    def income_expense_statement_params
-      params.fetch(:income_expense_statement, {})
-    end
+    { statement_data: statement_input, user_id: current_user.id }
+  end
 end

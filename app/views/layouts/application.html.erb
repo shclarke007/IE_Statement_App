@@ -12,8 +12,16 @@
   </head>
 
   <body>
-    <p class="notice text-3xl font-bold underline"><%= notice %></p>
+    <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
-    <%= yield %>
+    <% if user_signed_in? %>
+      <a href="/users/sign_out">Sign out</a>
+      <h3>Welcome back <%= current_user.email %></h3>
+      <%= yield %>
+    <% else %>
+      <h2>Welcome to your Income Expenditure app!</h2>
+      <p>Please <%= link_to 'sign up', new_user_registration_path %> or <%= link_to 'log in', new_user_session_path %> to get started.</p>
+      <%= yield %>
+    <% end %>
   </body>
 </html>
