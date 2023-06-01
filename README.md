@@ -2,7 +2,7 @@
   Income Expense program that allows upload of income & expense statements via csv or form input
 ## Getting Started 
   ```
-  git clone git@github.com:shclarke007/IE_Statement_App.git  
+  git clone git@github.com:shclarke007/Statement_App.git  
   cd ie_statement_app  
   bundle install
   ```
