@@ -1,5 +1,9 @@
 # README
-  Income Expense program that allows upload of income & expense statements via csv or form input
+  Created an income & expense app that allows upload of income & expense statements via csv or form input
+
+## Known issues  
+ - Input form bug
+ - UI needs updating
 ## Getting Started 
   ```
   git clone git@github.com:shclarke007/Statement_App.git  
